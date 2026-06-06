@@ -1,0 +1,58 @@
+Gizmo {
+ help "TemporalMatcher v2.0 — Dynamic Time Warping\n\nInput 0 (GEN IA)   : Clip IA a corriger\nInput 1 (REF PLATE) : Clip de reference"
+ inputs 2
+ tile_color 0x2a6496ff
+ addUserKnob {20 tm_tab l "Temporal Matcher"}
+ addUserKnob {26 title l "" +STARTLINE T "Temporal Matcher  (v2.0 DTW)"}
+ addUserKnob {26 d1 l "" +STARTLINE T " "}
+ addUserKnob {26 in0 l "Input 0" +STARTLINE T "=  GEN IA  (clip a corriger)"}
+ addUserKnob {26 in1 l "Input 1" +STARTLINE T "=  REF PLATE  (reference)"}
+ addUserKnob {26 d2 l "" +STARTLINE T " "}
+ addUserKnob {7 search_window l "Bande DTW" R 4 40}
+ search_window 8
+ addUserKnob {26 band_hint l "" +STARTLINE T "decalage max en frames  (8=rapide, 15=moyen, 30=grand)"}
+ addUserKnob {7 analysis_scale l "Echelle analyse" R 0.05 1}
+ analysis_scale 0.25
+ addUserKnob {26 scale_hint l "" +STARTLINE T "resolution d'analyse  (0.25 recommande)"}
+ addUserKnob {26 d3 l "" +STARTLINE T " "}
+ addUserKnob {3 first_frame l "Premiere frame"}
+ first_frame 1
+ addUserKnob {3 last_frame l "Derniere frame"}
+ last_frame 236
+ addUserKnob {22 use_project_range l "Plage projet" -STARTLINE T "n=nuke.thisNode()\nn['first_frame'].setValue(int(nuke.root().firstFrame()))\nn['last_frame'].setValue(int(nuke.root().lastFrame()))"}
+ addUserKnob {26 d4 l "" +STARTLINE T " "}
+ addUserKnob {22 btn_analyse l "ANALYSER ET APPLIQUER" +STARTLINE T "import importlib, sys, os\ntm_dir = os.path.join(os.path.expanduser('~'), '.nuke', 'TemporalMatcher')\nif tm_dir not in sys.path: sys.path.insert(0, tm_dir)\nimport TM_core\nimportlib.reload(TM_core)\nTM_core.run_analysis(nuke.thisNode())"}
+ addUserKnob {22 btn_reset l "Reset" -STARTLINE T "import importlib, sys, os\ntm_dir = os.path.join(os.path.expanduser('~'), '.nuke', 'TemporalMatcher')\nif tm_dir not in sys.path: sys.path.insert(0, tm_dir)\nimport TM_core\nimportlib.reload(TM_core)\nTM_core.reset_remap(nuke.thisNode())"}
+ addUserKnob {26 d5 l "" +STARTLINE T " "}
+ addUserKnob {26 status l "Statut" +STARTLINE T "En attente..."}
+ addUserKnob {20 debug_tab l "Debug"}
+ addUserKnob {26 remap_info l "" +STARTLINE T "Aucun remap calcule"}
+}
+ Input {
+  inputs 0
+  name ref_plate_input
+  label "REF PLATE"
+  number 1
+  xpos 200
+  ypos -150
+ }
+ Input {
+  inputs 0
+  name gen_ia_input
+  label "GEN IA"
+  number 0
+  xpos 0
+  ypos -150
+ }
+ TimeWarp {
+  name TemporalMatcher_TimeWarp
+  lookup {frame}
+  xpos 0
+  ypos -50
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 50
+ }
+end_group
